@@ -1,1 +1,3 @@
 /webapp/nb-configuration.xml
+/webapp/target/
+/backend/target/
