@@ -1,3 +1,6 @@
 /webapp/nb-configuration.xml
 /webapp/target/
 /backend/target/
+/backend/src/main/resources/rebel.xml
+/webapp/rebel.xml
+/rebel.xml
