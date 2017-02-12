@@ -7,6 +7,9 @@ import javax.ws.rs.core.MediaType;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import net.sf.ehcache.Cache;
+import net.sf.ehcache.CacheManager;
+import net.sf.ehcache.Element;
 
 import org.apache.log4j.Logger;
 
@@ -43,8 +46,17 @@ public class RestfulWSExample {
     @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
     public ArrayList<Actor> getAllActors() {
         System.out.println("Getting all actors...");
-        ArrayList<Actor> actorList = new ArrayList<Actor>(actors.values());
-        return actorList;
+
+        CacheManager cacheMgr = CacheManager.getInstance();
+        Cache cache = cacheMgr.getCache("actors");
+
+        if (cache.isKeyInCache("as")) {
+            return (ArrayList<Actor>) cache.get("as").getObjectValue();
+        } else {
+            ArrayList<Actor> actorList = new ArrayList<Actor>(actors.values());
+            cache.put(new Element("as", actorList));
+            return actorList;
+        }
     }
 
     @Path("{id}")
